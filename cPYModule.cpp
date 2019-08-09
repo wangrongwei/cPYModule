@@ -16,10 +16,6 @@ cPYModule :: cPYModule()
     PyRun_SimpleString("import os,sys");
     PyRun_SimpleString("sys.path.append('D:/omnetpp-5.2/samples/routing-python')");
     PyRun_SimpleString("sys.path.append('D:/Program Files/Python37/lib/site-packages/')");
-
-    PyObject * pModule = nullptr;
-    PyObject * pFunc = nullptr;
-
 }
 
 cPYModule :: ~cPYModule()
