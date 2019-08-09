@@ -12,17 +12,15 @@ using namespace std;
 class cPYModule 
 {
     public:
-        int a,b;
-        PyObject * pModule;
-        PyObject * pFunc;
-        std::unordered_map<const char *, unordered_map<const char *, PyObject *>> func_map;
+		std::unordered_map<const char *, unordered_map<const char *, PyObject *>> func_map;
 
     public:
-        cPYModule();
-        virtual ~cPYModule();
+		cPYModule();
+		virtual ~cPYModule();
         void addpath(std::string pathname);
-        void callpython(std::string filename, std::string funcname);
-
+        void callpython2(std::string filename, std::string funcname);
+        void callpython(PyObject *);
+		
 }
 
 

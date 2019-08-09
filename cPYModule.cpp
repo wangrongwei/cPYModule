@@ -42,32 +42,55 @@ void cPYModule :: addpath(std::string pathname)
     PyRun_SimpleString(cmd.c_str());
 }
 
-void cPYModule :: callpython(std::string filename, std::string funcname)
+/*
+ * 调用不常用的python函数接口
+ */
+void cPYModule :: callpython2(std::string filename, std::string funcname)
 {
-    pModule = PyImport_ImportModule(filename.c_str());//调用的Python文件名
+	/* 调用的python文件名 */
+    pModule = PyImport_ImportModule(filename.c_str());
     if(pModule == nullptr){
         std::cout<<"NULL"<<endl;
     }
-    pFunc = PyObject_GetAttrString(pModule, funcname.c_str());//调用的函数名
-    PyEval_CallObject(pFunc, nullptr);
+	/* 调用的函数名 */
+    pFunc = PyObject_GetAttrString(pModule, funcname.c_str());
+	PyEval_CallObject(pFunc, nullptr);
 
-    Py_Finalize();
+	Py_Finalize();
 
 }
 
 
 void cPYModule :: addfunc(const char *filename, const char *funcname)
 {
-
-	pModule = PyImport_ImportModule(filename.c_str());//调用的Python文件名
-    if(pModule == nullptr){
+	/* 调用的python文件名 */
+	PyObject *pModule = PyImport_ImportModule(filename.c_str());
+ 	if(pModule == nullptr){
         std::cout<<"NULL"<<endl;
-    }
+ 	}
     /* 调用的函数名 */
-    pFunc = PyObject_GetAttrString(pModule, funcname.c_str());
-    PyEval_CallObject(pFunc, nullptr);
+    PyObject *pFunc = PyObject_GetAttrString(pModule, funcname.c_str());
+	
+	func_map[filename][funcname] = pFunc;
 
     Py_Finalize();
 
 }
+
+/*
+ * 调用对应函数
+ */
+void cPYModule :: callpython(PyObject *func)
+{
+	/* 调用具体的函数 */
+	if(func == nullptr){
+		throw cRuntimeError("Error, this func has not import");
+	}
+    PyEval_CallObject(func, nullptr);
+    Py_Finalize();
+}
+
+
+
+
 
